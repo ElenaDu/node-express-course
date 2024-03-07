@@ -19,7 +19,7 @@ const getBody = (req, callback) => {
     callback(resultHash);
   });
 };
-
+//test comment
 // here, you could declare one or more variables to store what comes back from the form.
 let selectedColor = "white"; // Variable to store the selected color
 
@@ -68,6 +68,9 @@ const server = http.createServer((req, res) => {
   } else {
     res.end(form());
   }
+});
+server.on("request", (req) => {  
+  console.log("event received: ", req.method, req.url);  
 });
 
 server.listen(3000);

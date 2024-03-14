@@ -1,13 +1,34 @@
 <!DOCTYPE html>
-<html>
-    <head>
+<html lang="en">
 
-    </head>
-    <body>
-        <h1> This is a test page</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus id aut aliquid, 
-            neque consectetur incidunt labore dolorem ratione natus, molestiae excepturi ad voluptatem provident nobis tempore harum. 
-            Ducimus, officiis dolorem!</p>
+<head>
+    <meta charset="UTF-8">
+</head>
 
-    </body>
+<body style="background-color: #85dac9; font-family: Arial, sans-serif;">
+    <h1>Product List</h1>
+    <button id="fetchProductList" onclick="fetchProducts()">Show products</button>
+    <div id="productList"></div>
+
+    <script>
+        function fetchProducts() {
+            fetch('/api/v1/products')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const productListDiv = document.getElementById('productList');
+                    productListDiv.innerHTML = data.map(product => `<div style="margin-bottom: 10px;">Name: ${product.name}, Price: ${product.price}</div>`).join('');
+                })
+                .catch(error => {
+                    console.error('Error fetching products:', error);
+                });
+        }
+
+    </script>
+</body>
+
 </html>

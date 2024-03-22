@@ -1,11 +1,38 @@
 console.log('Express Tutorial')
 const express = require('express');
 const { products } = require("./data");
+let { people } = require("./data");
 
 const app = express();
 
-//setup static and middleware
-app.use(express.static('./public'));
+const logger = (req, res, next) => {
+    const method = req.method;
+    const url = req.url;
+    const time = new Date().toLocaleTimeString();
+    console.log(method, url, time);
+    next();
+
+}
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+const peopleRouter = require("./routes/people");
+app.use("/api/v1/people", peopleRouter);
+
+/*app.get('/api/v1/people', (req, res) => {
+    res.status(200).json({ sucess: true, data: people })
+})
+app.post('/api/v1/people', (req, res) => {
+    if (!req.body.name) {
+        return res.status(400).json({ success: false, message: "Please provide a name" });
+    }
+    people.push({ id: people.length + 1, name: req.body.name });
+    res.status(201).json({ success: true, name: req.body.name });
+
+})
+*/
+app.use(logger);
+app.use(express.static('./methods-public'));
 
 app.get('/api/v1/test', (req, res) => {
     res.json({ message: "It worked!" });
